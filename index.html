@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glamify Beauty</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #ffeef2;
+        }
+
+        nav {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: #ff6b95;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b95;
+            font-family: 'Arial', sans-serif;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: #ff6b95;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .search-container {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            margin: 1rem 0;
+        }
+
+        .search-bar {
+            width: 80%;
+            max-width: 600px;
+            padding: 0.5rem 1rem;
+            border: 2px solid #ff6b95;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background-color: white;
+            margin: 2rem 0;
+        }
+
+        .hero h1 {
+            color: #ff6b95;
+            margin-bottom: 1rem;
+        }
+
+        .products {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            color: #ff6b95;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b95;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-modal.active {
+            display: block;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .add-to-cart {
+            background: #ff6b95;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .add-to-cart:hover {
+            background: #ff4f7b;
+        }
+
+        .about-section, .reviews-section {
+            background: white;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .section-title {
+            color: #ff6b95;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: #fff5f8;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .review-card .stars {
+            color: gold;
+            margin-bottom: 1rem;
+        }
+
+        .review-author {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #ff6b95;
+        }
+
+        .cart-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Payment Form Styles */
+        .payment-section {
+            background: white;
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 107, 149, 0.1);
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: #ff6b95;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 0.8rem;
+            border: 2px solid #ffd1dc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6b95;
+            box-shadow: 0 0 0 3px rgba(255, 107, 149, 0.1);
+        }
+
+        .form-group input:hover {
+            border-color: #ff6b95;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        .pay-button {
+            background: #ff6b95;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .pay-button:hover {
+            background: #ff4f7b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 107, 149, 0.2);
+        }
+
+        .payment-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            color: #ff6b95;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a href="#home" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <span class="logo-text">Glamify</span>
+                </a>
+            </li>
+            <li class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+                <a href="#reviews">Reviews</a>
+                <a href="/review.html" class="write-review">Write Review</a>
+                <div class="auth-links">
+                    <a href="/login.html" id="loginLink">Login</a>
+                    <a href="/register.html" id="registerLink">Register</a>
+                    <a href="#" id="logoutLink" style="display: none;">Logout</a>
+                </div>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="cart-modal">
+        <h3>Shopping Cart</h3>
+        <div class="cart-items">
+            <!-- Cart items will be added here -->
+        </div>
+        <div class="cart-total">
+            <strong>Total: NPR 0</strong>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Search products...">
+    </div>
+
+    <div class="hero" id="home">
+        <h1>Welcome to Glamify Beauty</h1>
+        <p>Discover our collection of premium beauty products</p>
+    </div>
+
+    <div class="products" id="products">
+        <!-- Products will be loaded here -->
+    </div>
+
+    <div class="payment-section" id="payment">
+        <h2 class="section-title">Payment Details</h2>
+        <form class="payment-form">
+            <div class="form-group">
+                <label for="card-name">Cardholder Name</label>
+                <input type="text" id="card-name" placeholder="Enter cardholder name" required>
+            </div>
+            <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            </div>
+            <div class="card-row">
+                <div class="form-group">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                </div>
+            </div>
+            <button type="submit" class="pay-button">Pay Now</button>
+            <div class="payment-icons">
+                <i class="fab fa-cc-visa fa-2x"></i>
+                <i class="fab fa-cc-mastercard fa-2x"></i>
+                <i class="fab fa-cc-amex fa-2x"></i>
+            </div>
+        </form>
+    </div>
+
+    <div class="about-section" id="about">
+        <h2 class="section-title">About Us</h2>
+        <p>Welcome to Glamify Beauty, your premier destination for high-quality beauty products. We believe in making beauty accessible to everyone, offering carefully curated products that enhance your natural beauty.</p>
+        <p>Our mission is to provide you with the best beauty products at affordable prices, ensuring that everyone can feel confident and beautiful.</p>
+    </div>
+
+    <div class="reviews-section" id="reviews">
+        <h2 class="section-title">Customer Reviews</h2>
+        <div class="reviews-grid">
+            <!-- Reviews will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: "Matte Lipstick",
+                price: 1200,
+                image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            },
+            {
+                id: 2,
+                name: "Foundation",
+                price: 1800,
+                image: "https://images.unsplash.com/photo-1571875257727-256c39da42af?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            },
+            {
+                id: 3,
+                name: "Eyeshadow Palette",
+                price: 2500,
+                image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            },
+            {
+                id: 4,
+                name: "Brush Set",
+                price: 3500,
+                image: "https://images.unsplash.com/photo-1515688594390-b649af70d282?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            }
+        ];
+
+        // Sample reviews data
+        const reviews = [
+            {
+                author: "Sarah M.",
+                rating: 5,
+                text: "Amazing products! The lipstick stays on all day."
+            },
+            {
+                author: "Emily R.",
+                rating: 4,
+                text: "Great quality brushes, very soft and durable."
+            },
+            {
+                author: "Lisa K.",
+                rating: 5,
+                text: "The foundation is perfect for my skin tone!"
+            }
+        ];
+
+        // Cart functionality
+        let cart = [];
+        const cartIcon = document.querySelector('.cart-icon');
+        const cartModal = document.querySelector('.cart-modal');
+        const cartCount = document.querySelector('.cart-count');
+        const cartItems = document.querySelector('.cart-items');
+        const cartTotal = document.querySelector('.cart-total');
+
+        cartIcon.addEventListener('click', () => {
+            cartModal.classList.toggle('active');
+        });
+
+        function updateCart() {
+            cartCount.textContent = cart.length;
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p>NPR ${item.price}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.innerHTML = `<strong>Total: NPR ${total}</strong>`;
+        }
+
+        // Search functionality
+        const searchBar = document.querySelector('.search-bar');
+        searchBar.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm)
+            );
+            displayProducts(filteredProducts);
+        });
+
+        // Display products
+        function displayProducts(productsToShow) {
+            const productsContainer = document.querySelector('.products');
+            productsContainer.innerHTML = productsToShow.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="price">NPR ${product.price}</p>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Display reviews
+        function displayReviews() {
+            const reviewsContainer = document.querySelector('.reviews-grid');
+            reviewsContainer.innerHTML = reviews.map(review => `
+                <div class="review-card">
+                    <div class="stars">
+                        ${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}
+                    </div>
+                    <p>${review.text}</p>
+                    <p class="review-author">- ${review.author}</p>
+                </div>
+            `).join('');
+        }
+
+        // Add to cart functionality
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCart();
+            }
+        }
+
+        // Initial display
+        displayProducts(products);
+        displayReviews();
+
+        // Payment form handling
+        const cardNumber = document.getElementById('card-number');
+        const expiry = document.getElementById('expiry');
+        const cvv = document.getElementById('cvv');
+        const paymentForm = document.querySelector('.payment-form');
+
+        // Format card number with spaces
+        cardNumber.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            e.target.value = formattedValue;
+        });
+
+        // Format expiry date
+        expiry.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2);
+            }
+            e.target.value = value;
+        });
+
+        // Allow only numbers in CVV
+        cvv.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Handle form submission
+        paymentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Payment processed successfully!');
+            paymentForm.reset();
+        });
+
+        // Check authentication status
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const loginLink = document.getElementById('loginLink');
+            const registerLink = document.getElementById('registerLink');
+            const logoutLink = document.getElementById('logoutLink');
+            const writeReviewLink = document.querySelector('.write-review');
+
+            if (token) {
+                loginLink.style.display = 'none';
+                registerLink.style.display = 'none';
+                logoutLink.style.display = 'inline';
+                writeReviewLink.style.display = 'inline';
+            } else {
+                loginLink.style.display = 'inline';
+                registerLink.style.display = 'inline';
+                logoutLink.style.display = 'none';
+                writeReviewLink.style.display = 'none';
+            }
+        }
+
+        // Handle logout
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            checkAuth();
+            window.location.href = '/';
+        });
+
+        // Check auth status on page load
+        checkAuth();
+    </script>
+</body>
+</html> 

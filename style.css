@@ -1,0 +1,117 @@
+/* index.html */
+body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fffafc;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffcad4;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #7c0a02;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #7c0a02;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background-image: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .hero h1,
+    .hero p,
+    .hero .btn {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      color: #fff;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #ffb3c6;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .products {
+      padding: 2rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product {
+      border: 1px solid #ffccd5;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+      background-color: #fff0f5;
+    }
+
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      margin: 0.5rem 0;
+      color: #7c0a02;
+    }
+
+    .product p {
+      color: #333;
+    }
+
+    .product button {
+      padding: 0.5rem 1rem;
+      background-color: #ff8fab;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }

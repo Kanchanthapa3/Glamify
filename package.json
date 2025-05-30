@@ -1,0 +1,14 @@
+{
+  "name": "glamify-beauty",
+  "version": "1.0.0",
+  "description": "Glamify Beauty E-commerce Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

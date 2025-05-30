@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Glamify Beauty</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff69b4;
+            margin: 0.5rem 0;
+        }
+
+        .recent-products {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .product-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-price {
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        .feedback-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-form {
+            margin-top: 1.5rem;
+        }
+
+        .feedback-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .rating-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .star-rating {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ddd;
+        }
+
+        .star-rating.active {
+            color: #ffd700;
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+
+        .btn-logout {
+            background: none;
+            border: 2px solid #ff69b4;
+            color: #ff69b4;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #ff69b4;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="product.html">Products</a>
+            <a href="about.html">About Us</a>
+        </div>
+        <button class="btn-logout" onclick="handleLogout()">Logout</button>
+    </nav>
+
+    <div class="dashboard-container">
+        <section class="welcome-section animate__animated animate__fadeIn">
+            <h1>Welcome to Your Dashboard</h1>
+            <p>Manage your products and view customer feedback</p>
+        </section>
+
+        <div class="stats-grid animate__animated animate__fadeInUp">
+            <div class="stat-card">
+                <h3>Total Products</h3>
+                <div class="stat-number" id="totalProducts">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <div class="stat-number">24</div>
+            </div>
+            <div class="stat-card">
+                <h3>Customer Rating</h3>
+                <div class="stat-number">4.8</div>
+            </div>
+        </div>
+
+        <section class="recent-products animate__animated animate__fadeInUp">
+            <h2>Recent Products</h2>
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <section class="feedback-section animate__animated animate__fadeInUp">
+            <h2>Customer Feedback</h2>
+            <div class="feedback-form">
+                <div class="rating-container">
+                    <span class="star-rating" data-rating="1">★</span>
+                    <span class="star-rating" data-rating="2">★</span>
+                    <span class="star-rating" data-rating="3">★</span>
+                    <span class="star-rating" data-rating="4">★</span>
+                    <span class="star-rating" data-rating="5">★</span>
+                </div>
+                <textarea class="feedback-input" id="feedbackText" rows="4" placeholder="Share your experience..."></textarea>
+                <button class="btn-submit" onclick="submitFeedback()">Submit Feedback</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Check authentication
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login.html';
+        }
+
+        // Initialize star rating
+        const stars = document.querySelectorAll('.star-rating');
+        let currentRating = 0;
+
+        stars.forEach(star => {
+            star.addEventListener('click', (e) => {
+                const rating = e.target.dataset.rating;
+                currentRating = rating;
+                updateStars(rating);
+            });
+        });
+
+        function updateStars(rating) {
+            stars.forEach(star => {
+                star.classList.toggle('active', star.dataset.rating <= rating);
+            });
+        }
+
+        // Load products
+        async function loadProducts() {
+            try {
+                const response = await fetch('http://localhost:5500/api/products');
+                const products = await response.json();
+                
+                const productGrid = document.getElementById('productGrid');
+                document.getElementById('totalProducts').textContent = products.length;
+
+                productGrid.innerHTML = products.map(product => `
+                    <div class="product-card animate__animated animate__fadeIn">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="product-price">NPR ${product.price}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // Submit feedback
+        async function submitFeedback() {
+            const feedbackText = document.getElementById('feedbackText').value;
+            
+            if (!currentRating || !feedbackText) {
+                alert('Please provide both rating and feedback');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5500/api/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        rating: currentRating,
+                        comment: feedbackText
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Thank you for your feedback!');
+                    document.getElementById('feedbackText').value = '';
+                    currentRating = 0;
+                    updateStars(0);
+                } else {
+                    alert('Error submitting feedback. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error submitting feedback:', error);
+                alert('Error submitting feedback. Please try again.');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        }
+
+        // Load initial data
+        loadProducts();
+    </script>
+</body>
+</html> 

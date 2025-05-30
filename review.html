@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Review - Glamify Beauty</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #ffeef2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .review-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 107, 149, 0.1);
+        }
+
+        .review-title {
+            color: #ff6b95;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ff6b95;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ffd1dc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff6b95;
+            box-shadow: 0 0 0 3px rgba(255, 107, 149, 0.1);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            color: #ffd1dc;
+            margin: 1rem 0;
+        }
+
+        .star-rating i {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .star-rating i.active {
+            color: #ff6b95;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #ff6b95;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #ff4f7b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 107, 149, 0.2);
+        }
+
+        .home-link {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: #ff6b95;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <div class="review-container">
+        <h2 class="review-title">Write a Review</h2>
+        <form id="reviewForm">
+            <div class="form-group">
+                <label for="product">Select Product</label>
+                <select id="product" name="product" required>
+                    <option value="">Choose a product...</option>
+                    <option value="1">Matte Lipstick</option>
+                    <option value="2">Foundation</option>
+                    <option value="3">Eyeshadow Palette</option>
+                    <option value="4">Brush Set</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Rating</label>
+                <div class="star-rating" id="starRating">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title">Review Title</label>
+                <input type="text" id="title" name="title" required placeholder="Sum up your review in a short title">
+            </div>
+            <div class="form-group">
+                <label for="review">Your Review</label>
+                <textarea id="review" name="review" required placeholder="Tell us what you liked or disliked about the product..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Submit Review</button>
+        </form>
+    </div>
+
+    <script>
+        // Star rating functionality
+        const starRating = document.getElementById('starRating');
+        let currentRating = 0;
+
+        starRating.addEventListener('click', (e) => {
+            if (e.target.tagName === 'I') {
+                const rating = parseInt(e.target.dataset.rating);
+                currentRating = rating;
+                updateStars();
+            }
+        });
+
+        starRating.addEventListener('mouseover', (e) => {
+            if (e.target.tagName === 'I') {
+                const rating = parseInt(e.target.dataset.rating);
+                highlightStars(rating);
+            }
+        });
+
+        starRating.addEventListener('mouseout', () => {
+            highlightStars(currentRating);
+        });
+
+        function updateStars() {
+            const stars = starRating.children;
+            for (let i = 0; i < stars.length; i++) {
+                stars[i].className = i < currentRating ? 'fas fa-star active' : 'far fa-star';
+            }
+        }
+
+        function highlightStars(rating) {
+            const stars = starRating.children;
+            for (let i = 0; i < stars.length; i++) {
+                stars[i].className = i < rating ? 'fas fa-star active' : 'far fa-star';
+            }
+        }
+
+        // Form submission
+        document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (currentRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+
+            const formData = {
+                productId: document.getElementById('product').value,
+                rating: currentRating,
+                title: document.getElementById('title').value,
+                review: document.getElementById('review').value
+            };
+
+            try {
+                const response = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Thank you for your review!');
+                    window.location.href = '/';
+                } else {
+                    alert('Failed to submit review. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting your review.');
+            }
+        });
+    </script>
+</body>
+</html> 

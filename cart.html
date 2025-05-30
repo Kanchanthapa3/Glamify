@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Glamify Beauty</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 1rem;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-price {
+            color: #ff69b4;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0 2rem;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: 2px solid #ff69b4;
+            color: #ff69b4;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #ff69b4;
+            color: white;
+        }
+
+        .remove-btn {
+            background: #ff3366;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .cart-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="product.html">Products</a>
+            <a href="about.html">About Us</a>
+            <a href="cart.html">Cart</a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <h1>Shopping Cart</h1>
+        <div id="cartItems" class="animate__animated animate__fadeIn">
+            <!-- Cart items will be loaded here -->
+        </div>
+
+        <div id="cartSummary" class="cart-summary animate__animated animate__fadeIn">
+            <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">NPR 0</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping:</span>
+                <span>NPR 100</span>
+            </div>
+            <div class="summary-row">
+                <strong>Total:</strong>
+                <strong id="total">NPR 0</strong>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize cart from localStorage or empty array
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function displayCart() {
+            const cartItems = document.getElementById('cartItems');
+            const subtotalElement = document.getElementById('subtotal');
+            const totalElement = document.getElementById('total');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart animate__animated animate__fadeIn">
+                        <h2>Your cart is empty</h2>
+                        <p>Add some products to your cart and they will appear here</p>
+                    </div>
+                `;
+                subtotalElement.textContent = 'NPR 0';
+                totalElement.textContent = 'NPR 100';
+                return;
+            }
+
+            let subtotal = 0;
+            cartItems.innerHTML = cart.map(item => {
+                subtotal += item.price * item.quantity;
+                return `
+                    <div class="cart-item animate__animated animate__fadeIn">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-details">
+                            <h3>${item.name}</h3>
+                            <p class="item-price">NPR ${item.price}</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                    </div>
+                `;
+            }).join('');
+
+            subtotalElement.textContent = `NPR ${subtotal}`;
+            totalElement.textContent = `NPR ${subtotal + 100}`; // Adding shipping cost
+        }
+
+        function updateQuantity(id, change) {
+            const itemIndex = cart.findIndex(item => item.id === id);
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity = Math.max(1, cart[itemIndex].quantity + change);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+            }
+        }
+
+        function removeItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Please add items to your cart before checking out.');
+                return;
+            }
+            alert('Thank you for your purchase! This is a demo checkout.');
+            cart = [];
+            localStorage.removeItem('cart');
+            displayCart();
+        }
+
+        // Display cart on page load
+        displayCart();
+    </script>
+</body>
+</html>
