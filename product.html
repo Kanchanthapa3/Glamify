@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Glamify Beauty</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #ffeef2;
+            min-height: 100vh;
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff69b4;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #ff69b4;
+            border-radius: 20px;
+            background: none;
+            color: #ff69b4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #ff69b4;
+            color: white;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ffd1dc;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-price {
+            color: #ff69b4;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.8rem;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: #ff4f7b;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ff69b4;
+            background: white;
+            color: #ff69b4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background: #ff69b4;
+            color: white;
+        }
+
+        .cart-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stars {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-rating {
+            margin-bottom: 1rem;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="product.html" class="active">Products</a>
+            <a href="about.html">About Us</a>
+            <a href="cart.html">Cart</a>
+        </div>
+    </nav>
+
+    <div class="products-container">
+        <div class="filters">
+            <input type="text" class="search-bar" placeholder="Search products...">
+            <div class="filter-group">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="Eyes">Eyes</button>
+                <button class="filter-btn" data-category="Lips">Lips</button>
+                <button class="filter-btn" data-category="Face">Face</button>
+                <button class="filter-btn" data-category="Skincare">Skincare</button>
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn" data-sort="price-asc">Price: Low to High</button>
+                <button class="filter-btn" data-sort="price-desc">Price: High to Low</button>
+                <button class="filter-btn" data-sort="popular">Most Popular</button>
+            </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn prev">Previous</button>
+            <div class="page-numbers">
+                <!-- Page numbers will be generated here -->
+            </div>
+            <button class="page-btn next">Next</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample product data with unique images
+        const products = [
+            {
+                id: 1,
+                name: "Luxury Matte Lipstick",
+                price: 1500,
+                category: "Lips",
+                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                rating: 4.5
+            },
+            {
+                id: 2,
+                name: "Radiant Foundation",
+                price: 2500,
+                category: "Face",
+                image: "https://images.unsplash.com/photo-1571875257727-256c39da42af?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                rating: 4.8
+            },
+            {
+                id: 3,
+                name: "Eyeshadow Palette",
+                price: 3500,
+                category: "Eyes",
+                image: "https://images.unsplash.com/photo-1583241800698-e8ab01830a07?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                rating: 4.7
+            },
+            {
+                id: 4,
+                name: "Hydrating Serum",
+                price: 4500,
+                category: "Skincare",
+                image: "./images/serum.jpeg",
+                rating: 4.9
+            },
+            {
+                id: 5,
+                name: "Volumizing Mascara",
+                price: 1800,
+                category: "Eyes",
+                image: "./images/mascara.jpeg",
+                rating: 4.6
+            },
+            {
+                id: 6,
+                name: "Liquid Eyeliner",
+                price: 1200,
+                category: "Eyes",
+                image: "./images/image.png",
+                rating: 4.4
+            },
+            {
+                id: 7,
+                name: "Glowing Blush",
+                price: 1900,
+                category: "Face",
+                image: "./images/blush.jpeg",
+                rating: 4.3
+            },
+            {
+                id: 8,
+                name: "Moisturizing Lip Gloss",
+                price: 1300,
+                category: "Lips",
+                image: "./images/gloss.jpg",
+                rating: 4.5
+            },
+            {
+                id: 9,
+                name: "Setting Powder",
+                price: 2200,
+                category: "Face",
+                image: "./images/powder.jpeg",
+                rating: 4.2
+            },
+            {
+                id: 10,
+                name: "Facial Cleanser",
+                price: 2800,
+                category: "Skincare",
+                image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                rating: 4.7
+            },
+            {
+                id: 11,
+                name: "Eyebrow Pencil",
+                price: 900,
+                category: "Eyes",
+                image: "https://images.unsplash.com/photo-1597225244660-1cd128c64284?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                rating: 4.3
+            },
+            {
+                id: 12,
+                name: "Highlighting Palette",
+                price: 3200,
+                category: "Face",
+                image: "./images/highlighter.jpeg",
+                rating: 4.8
+            },
+            {
+                id: 13,
+                name: "Velvet Liquid Lipstick",
+                price: 1700,
+                category: "Lips",
+                image: "./images/lip.jpeg",
+                rating: 4.6
+            },
+            {
+                id: 14,
+                name: "Illuminating Primer",
+                price: 2100,
+                category: "Face",
+                image: "./images/primer.jpeg",
+                rating: 4.4
+            },
+            {
+                id: 15,
+                name: "Night Recovery Cream",
+                price: 3800,
+                category: "Skincare",
+                image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                rating: 4.9
+            },
+            {
+                id: 16,
+                name: "Sculpting Contour Kit",
+                price: 2900,
+                category: "Face",
+                image: "./images/Contour.jpeg",
+                rating: 4.7
+            }
+        ];
+
+        // State management
+        let currentPage = 1;
+        const itemsPerPage = 8;
+        let filteredProducts = [...products];
+        let currentCategory = 'all';
+        let currentSort = null;
+
+        // Filter products by category and search term
+        function filterProducts(category, searchTerm = '') {
+            const searchLower = searchTerm.toLowerCase();
+            
+            filteredProducts = products.filter(product => {
+                const matchesCategory = category === 'all' || product.category === category;
+                const matchesSearch = product.name.toLowerCase().includes(searchLower) ||
+                                    product.category.toLowerCase().includes(searchLower);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (currentSort) {
+                sortProducts(currentSort);
+            }
+
+            currentPage = 1;
+            updatePagination();
+            displayProducts();
+        }
+
+        // Sort products
+        function sortProducts(sortType) {
+            currentSort = sortType;
+            switch (sortType) {
+                case 'price-asc':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-desc':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'popular':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+            }
+            displayProducts();
+        }
+
+        // Display products for current page
+        function displayProducts() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedProducts = filteredProducts.slice(start, end);
+
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = paginatedProducts.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">NPR ${product.price}</p>
+                        <div class="product-rating">
+                            ${getStarRating(product.rating)}
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Generate star rating HTML
+        function getStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return `<div class="stars">${stars}</div>`;
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            const pageNumbers = document.querySelector('.page-numbers');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+
+            // Update prev/next buttons
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+
+            // Generate page numbers
+            let pagesHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                pagesHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+            pageNumbers.innerHTML = pagesHTML;
+
+            // Add click handlers to page numbers
+            document.querySelectorAll('.page-numbers .page-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentPage = parseInt(btn.dataset.page);
+                    updatePagination();
+                    displayProducts();
+                });
+            });
+        }
+
+        // Event Listeners
+        document.querySelector('.prev').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+                displayProducts();
+            }
+        });
+
+        document.querySelector('.next').addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+                displayProducts();
+            }
+        });
+
+        // Category filter buttons
+        document.querySelectorAll('.filter-group:first-child .filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-group:first-child .filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                filterProducts(currentCategory, document.querySelector('.search-bar').value);
+            });
+        });
+
+        // Sort buttons
+        document.querySelectorAll('.filter-group:last-child .filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-group:last-child .filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                sortProducts(btn.dataset.sort);
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-bar').addEventListener('input', (e) => {
+            filterProducts(currentCategory, e.target.value);
+        });
+
+        // Add to cart functionality
+        function addToCart(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                const notification = document.createElement('div');
+                notification.className = 'cart-notification';
+                notification.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    ${product.name} added to cart!
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        }
+
+        // Initialize
+        updatePagination();
+        displayProducts();
+    </script>
+</body>
+</html> 

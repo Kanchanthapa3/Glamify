@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glamify Beauty</title>
+    <title>Glamify Beauty - Your Beauty Destination</title>
+    <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,15 +18,93 @@
 
         body {
             background-color: #ffeef2;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(45deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
+                url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-attachment: fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at top right, rgba(255, 107, 149, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at bottom left, rgba(255, 182, 193, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        nav, .hero, .featured-categories, .products, .about-section, .reviews-section, .payment-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .featured-categories {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 1400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+        }
+
+        .products {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+        }
+
+
+
+        .beauty-tips {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .about-section, .reviews-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .payment-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         nav {
-            background-color: white;
-            padding: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
         }
 
         .logo {
@@ -75,32 +156,148 @@
             font-weight: bold;
         }
 
-        .search-container {
-            text-align: center;
-            padding: 1rem;
-            background: white;
-            margin: 1rem 0;
-        }
-
-        .search-bar {
-            width: 80%;
-            max-width: 600px;
-            padding: 0.5rem 1rem;
-            border: 2px solid #ff6b95;
-            border-radius: 25px;
-            font-size: 1rem;
-        }
-
         .hero {
+            position: relative;
             text-align: center;
-            padding: 4rem 1rem;
-            background-color: white;
-            margin: 2rem 0;
+            padding: 0;
+            height: 100vh;
+            background: none;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(255, 107, 149, 0.3));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .hero h1 {
-            color: #ff6b95;
-            margin-bottom: 1rem;
+            color: #ff3377;
+            margin-bottom: 1.5rem;
+            font-size: 4.5rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease-out;
+            letter-spacing: 2px;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(45deg, #ff3377, #ff6b95);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .hero h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff3377, #ff6b95);
+            border-radius: 2px;
+        }
+
+        .hero p {
+            color: white;
+            font-size: 1.4rem;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+            line-height: 1.6;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background-color: #ff6b95;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            animation: fadeIn 1.5s ease-out;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        }
+
+        .hero-btn:hover {
+            background-color: transparent;
+            border-color: #ff6b95;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 149, 0.4);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .products {
@@ -170,17 +367,54 @@
             position: fixed;
             top: 60px;
             right: 20px;
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            width: 300px;
+            background: white url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+            background-blend-mode: overlay;
+            padding: 1.2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            width: 250px;
             max-height: 400px;
             overflow-y: auto;
         }
 
+        .cart-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            z-index: -1;
+        }
+
         .cart-modal.active {
             display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255, 107, 149, 0.1);
+        }
+
+        .cart-header h3 {
+            color: #ff6b95;
+            font-size: 1.2rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: #ff6b95;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.2rem;
         }
 
         .cart-item {
@@ -189,7 +423,10 @@
             gap: 1rem;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(255, 107, 149, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.8rem;
+            border-radius: 8px;
         }
 
         .cart-item img {
@@ -199,19 +436,24 @@
             border-radius: 5px;
         }
 
-        .add-to-cart {
-            background: #ff6b95;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            width: 100%;
+        .cart-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid rgba(255, 107, 149, 0.1);
+            text-align: right;
+            color: #ff6b95;
+            font-weight: bold;
         }
 
-        .add-to-cart:hover {
-            background: #ff4f7b;
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .about-section, .reviews-section {
@@ -251,12 +493,6 @@
             margin-top: 1rem;
             font-weight: bold;
             color: #ff6b95;
-        }
-
-        .cart-total {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
         }
 
         /* Payment Form Styles */
@@ -337,37 +573,228 @@
             margin-top: 1rem;
             color: #ff6b95;
         }
+
+        .featured-categories {
+            padding: 4rem 2rem;
+            background: white;
+            position: relative;
+        }
+
+        .featured-categories h2 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .featured-categories h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: #ff6b95;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255,107,149,0.2);
+        }
+
+        .category-card i {
+            font-size: 3rem;
+            color: #ff6b95;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover i {
+            transform: scale(1.2);
+        }
+
+        .category-card h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin: 1rem 0 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .category-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover p {
+            opacity: 1;
+            transform: translateY(2px);
+        }
+
+        .beauty-tips {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 300px;
+            z-index: 100;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .beauty-tips h4 {
+            color: #ff6b95;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .beauty-tips p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .close-tips {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                rgba(255, 107, 149, 0.2),
+                rgba(255, 107, 149, 0.5) 50%,
+                rgba(255, 107, 149, 0.2)
+            );
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li>
-                <a href="#home" class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-spa"></i>
-                    </div>
-                    <span class="logo-text">Glamify</span>
-                </a>
-            </li>
-            <li class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#products">Products</a>
-                <a href="#about">About</a>
-                <a href="#reviews">Reviews</a>
-                <a href="/review.html" class="write-review">Write Review</a>
-                <div class="auth-links">
-                    <a href="/login.html" id="loginLink">Login</a>
-                    <a href="/register.html" id="registerLink">Register</a>
-                    <a href="#" id="logoutLink" style="display: none;">Logout</a>
-                </div>
-                <div class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
-            </li>
-        </ul>
-    </nav>
+    <header>
+        <nav>
+            <a href="/" class="logo"><span>Glamify</span></a>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/product.html">Products</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+                <li><a href="/cart.html">Cart</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="/cart.html"><i class="fas fa-shopping-cart"></i></a>
+                <a href="/login.html"><i class="fas fa-user"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="hero-slide active">
+            <div class="hero-content">
+                <h1>Welcome to Glamify Beauty</h1>
+                <p>Discover your perfect beauty routine with our curated collection of luxury cosmetics and skincare products.</p>
+                <a href="#products" class="hero-btn">Shop Now</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="hero-content">
+                <h1>Discover Your Natural Beauty</h1>
+                <p>Premium skincare and makeup products for your daily beauty routine</p>
+                <a href="/product.html" class="cta-button">Shop Now</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="hero-content">
+                <h1>Luxury Beauty Essentials</h1>
+                <p>Curated collection of high-end beauty products</p>
+                <a href="/product.html" class="cta-button">Explore Collection</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="hero-content">
+                <h1>Summer Beauty Trends</h1>
+                <p>Get ready for summer with our latest beauty must-haves</p>
+                <a href="/product.html" class="cta-button">View Trends</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="featured-categories">
+        <h2>Shop by Category</h2>
+        <div class="category-grid">
+            <a href="/product.html?category=eyes" class="category-card">
+                <i class="fas fa-eye"></i>
+                <h3>Eye Makeup</h3>
+                <p>Discover stunning mascaras, eyeshadows, and liners</p>
+            </a>
+            <a href="/product.html?category=lips" class="category-card">
+                <i class="fas fa-kiss-wink-heart"></i>
+                <h3>Lip Products</h3>
+                <p>Explore our collection of lipsticks and lip care</p>
+            </a>
+            <a href="/product.html?category=face" class="category-card">
+                <i class="fas fa-face-smile"></i>
+                <h3>Face Care</h3>
+                <p>Premium foundations, blush, and highlighters</p>
+            </a>
+            <a href="/product.html?category=skin" class="category-card">
+                <i class="fas fa-spa"></i>
+                <h3>Skincare</h3>
+                <p>Luxurious serums, moisturizers, and treatments</p>
+            </a>
+        </div>
+    </div>
 
     <div class="cart-modal">
         <h3>Shopping Cart</h3>
@@ -379,14 +806,6 @@
         </div>
     </div>
 
-    <div class="search-container">
-        <input type="text" class="search-bar" placeholder="Search products...">
-    </div>
-
-    <div class="hero" id="home">
-        <h1>Welcome to Glamify Beauty</h1>
-        <p>Discover our collection of premium beauty products</p>
-    </div>
 
     <div class="products" id="products">
         <!-- Products will be loaded here -->
@@ -435,14 +854,74 @@
         </div>
     </div>
 
+    <div class="beauty-tips">
+        <h4>Beauty Tip</h4>
+        <p>Glow begins from within-hydrate, nourish & rest.</p>
+        <button class="close-tips">Close</button>
+    </div>
+
+    <script src="/public/js/script.js"></script>
     <script>
+        // Hero Slider Functionality
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        const slideInterval = 5000; // Change slide every 5 seconds
+
+        function nextSlide() {
+            heroSlides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % heroSlides.length;
+            heroSlides[currentSlide].classList.add('active');
+        }
+
+        // Start the slideshow
+        setInterval(nextSlide, slideInterval);
+
+        // Beauty Tips Functionality
+        const beautyTips = [
+            "Always remove your makeup before going to bed to let your skin breathe and regenerate.",
+            "Stay hydrated! Drinking plenty of water helps maintain healthy, glowing skin.",
+            "Apply sunscreen daily, even on cloudy days, to protect your skin from UV damage.",
+            "Use a gentle, pH-balanced cleanser to maintain your skin's natural barrier.",
+            "Get your beauty sleep! 7-8 hours of sleep helps your skin repair and rejuvenate."
+        ];
+
+        const beautyTipsElement = document.querySelector('.beauty-tips p');
+        const closeTipsButton = document.querySelector('.close-tips');
+        let currentTip = 0;
+
+        function updateBeautyTip() {
+            beautyTipsElement.textContent = beautyTips[currentTip];
+            currentTip = (currentTip + 1) % beautyTips.length;
+        }
+
+        // Update beauty tip every 10 seconds
+        updateBeautyTip();
+        setInterval(updateBeautyTip, 10000);
+
+        // Close beauty tips
+        closeTipsButton.addEventListener('click', () => {
+            document.querySelector('.beauty-tips').style.display = 'none';
+        });
+
+        // Add background images to hero slides
+        const slideImages = [
+            'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80',
+            'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80',
+            'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80',
+            'https://images.unsplash.com/photo-1526045478516-99145907023c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'
+        ];
+
+        heroSlides.forEach((slide, index) => {
+            slide.style.backgroundImage = `linear-gradient(45deg, rgba(0,0,0,0.7) 0%, rgba(255,107,149,0.4) 100%), url('${slideImages[index]}')`;
+        });
+
         // Sample product data
         const products = [
             {
                 id: 1,
                 name: "Matte Lipstick",
                 price: 1200,
-                image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
             },
             {
                 id: 2,
@@ -454,7 +933,7 @@
                 id: 3,
                 name: "Eyeshadow Palette",
                 price: 2500,
-                image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+                image: "https://images.unsplash.com/photo-1583241800698-e8ab01830a07?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
             },
             {
                 id: 4,
@@ -610,29 +1089,16 @@
             const token = localStorage.getItem('token');
             const loginLink = document.getElementById('loginLink');
             const registerLink = document.getElementById('registerLink');
-            const logoutLink = document.getElementById('logoutLink');
-            const writeReviewLink = document.querySelector('.write-review');
-
+            
             if (token) {
                 loginLink.style.display = 'none';
                 registerLink.style.display = 'none';
-                logoutLink.style.display = 'inline';
-                writeReviewLink.style.display = 'inline';
-            } else {
-                loginLink.style.display = 'inline';
-                registerLink.style.display = 'inline';
-                logoutLink.style.display = 'none';
-                writeReviewLink.style.display = 'none';
+                const dashboardLink = document.createElement('a');
+                dashboardLink.href = '/dashboard.html';
+                dashboardLink.textContent = 'Dashboard';
+                loginLink.parentNode.appendChild(dashboardLink);
             }
         }
-
-        // Handle logout
-        document.getElementById('logoutLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            checkAuth();
-            window.location.href = '/';
-        });
 
         // Check auth status on page load
         checkAuth();

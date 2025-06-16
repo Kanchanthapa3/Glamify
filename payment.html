@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Glamify Beauty</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/payment.css">
+    <!-- Khalti Payment Gateway -->
+    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2 class="section-title">Payment Information</h2>
+            <div class="payment-methods">
+                <div class="payment-method">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div>Cash on Delivery</div>
+                </div>
+                <div class="payment-method" onclick="initiateKhalti()">
+                    <i class="fas fa-wallet"></i>
+                    <div>Khalti</div>
+                </div>
+            </div>
+
+            <form id="paymentForm" style="display: none;">
+                <div class="form-group">
+                    <label for="cardName">Name on Card</label>
+                    <input type="text" id="cardName" required placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" required placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+
+                <div class="card-details">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" required placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="password" id="cvv" required placeholder="123" maxlength="3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Shipping Address</label>
+                    <input type="text" id="address" required placeholder="Enter your full address">
+                </div>
+
+                <button type="submit" class="pay-button">
+                    <i class="fas fa-lock"></i> Pay Securely
+                </button>
+
+                <div class="secure-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    Your payment information is secure
+                </div>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <h2 class="section-title">Order Summary</h2>
+            <div class="summary-item">
+                <span>Subtotal</span>
+                <span>NPR 0</span>
+            </div>
+            <div class="summary-item">
+                <span>Shipping</span>
+                <span>NPR 100</span>
+            </div>
+            <div class="summary-item">
+                <span>Tax</span>
+                <span>NPR 0</span>
+            </div>
+            <div class="summary-item summary-total">
+                <span>Total</span>
+                <span>NPR 100</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/payment.js"></script>
+</body>
+</html> 
