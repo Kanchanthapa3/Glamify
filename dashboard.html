@@ -333,391 +333,43 @@
     </style>
 </head>
 <body>
-    <nav class="nav-bar">
+    <div class="nav-bar">
+        <div class="logo">
+            <img src="public/images/logo.svg" alt="Glamify Logo" style="height:40px;">
+        </div>
         <div class="nav-links">
-            <a href="dashboard.html">Dashboard</a>
+            <a href="index.html">Home</a>
             <a href="product.html">Products</a>
-            <a href="about.html">About Us</a>
+            <a href="cart.html">Cart</a>
+            <button class="btn-logout">Logout</button>
         </div>
-        <button class="btn-logout" onclick="handleLogout()">Logout</button>
-    </nav>
-
-    <!-- Featured Products Slider -->
-    <div class="slider-container animate__animated animate__fadeIn">
-        <div class="slider">
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Luxury Eye Collection">
-                <div class="slide-content">
-                    <h3>Luxury Eye Collection</h3>
-                    <p>Discover our premium eye makeup range</p>
-                </div>
-            </div>
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1596704017234-0e0dd0f6f5f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Face Products">
-                <div class="slide-content">
-                    <h3>Radiant Face Collection</h3>
-                    <p>Achieve that perfect glow</p>
-                </div>
-            </div>
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1586495777965-dcb7e3ae0172?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Lip Collection">
-                <div class="slide-content">
-                    <h3>Perfect Lip Collection</h3>
-                    <p>Find your perfect lip color</p>
-                </div>
-            </div>
-        </div>
-        <button class="slider-btn prev">❮</button>
-        <button class="slider-btn next">❯</button>
-        <div class="slider-dots"></div>
     </div>
-
     <div class="dashboard-container">
-        <section class="welcome-section animate__animated animate__fadeIn">
-            <h1>Welcome to Your Dashboard</h1>
-            <p>Discover our latest beauty collections</p>
+        <section class="welcome-section">
+            <h1>Welcome to Your Glamify Dashboard!</h1>
+            <p>Manage your beauty journey and orders here.</p>
         </section>
-
-        <div class="category-grid animate__animated animate__fadeInUp">
-            <div class="category-card">
-                <i class="fas fa-eye"></i>
-                <h3>Eye Makeup</h3>
-                <p>6 Products</p>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="orderCount">0</div>
+                <div>Total Orders</div>
             </div>
-            <div class="category-card">
-                <i class="fas fa-lips"></i>
-                <h3>Lip Products</h3>
-                <p>4 Products</p>
-            </div>
-            <div class="category-card">
-                <i class="fas fa-spa"></i>
-                <h3>Face Care</h3>
-                <p>8 Products</p>
-            </div>
-            <div class="category-card">
-                <i class="fas fa-pump-soap"></i>
-                <h3>Skincare</h3>
-                <p>4 Products</p>
+            <div class="stat-card">
+                <div class="stat-number" id="cartCount">0</div>
+                <div>Items in Cart</div>
             </div>
         </div>
-
-        <section class="featured-products animate__animated animate__fadeInUp">
-            <h2>Featured Products</h2>
-            <div class="product-grid" id="featuredProducts">
-                <!-- Products will be loaded here -->
-            </div>
-        </section>
-
-        <section class="new-arrivals animate__animated animate__fadeInUp">
-            <h2>New Arrivals</h2>
-            <div class="product-grid" id="newArrivals">
-                <!-- Products will be loaded here -->
-            </div>
-        </section>
-
-        <section class="best-sellers animate__animated animate__fadeInUp">
-            <h2>Best Sellers</h2>
-            <div class="product-grid" id="bestSellers">
-                <!-- Products will be loaded here -->
-            </div>
-        </section>
-
-        <div class="stats-grid animate__animated animate__fadeInUp">
-            <div class="stat-card">
-                <h3>Total Products</h3>
-                <div class="stat-number" id="totalProducts">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Orders</h3>
-                <div class="stat-number">24</div>
-            </div>
-            <div class="stat-card">
-                <h3>Customer Rating</h3>
-                <div class="stat-number">4.8</div>
-            </div>
-        </div>
-
-        <section class="recent-products animate__animated animate__fadeInUp">
-            <h2>Recent Products</h2>
-            <div class="product-grid" id="productGrid">
-                <!-- Products will be loaded here -->
-            </div>
-        </section>
-
-        <section class="feedback-section animate__animated animate__fadeInUp">
-            <h2>Customer Feedback</h2>
-            <div class="feedback-form">
-                <div class="rating-container">
-                    <span class="star-rating" data-rating="1">★</span>
-                    <span class="star-rating" data-rating="2">★</span>
-                    <span class="star-rating" data-rating="3">★</span>
-                    <span class="star-rating" data-rating="4">★</span>
-                    <span class="star-rating" data-rating="5">★</span>
-                </div>
-                <textarea class="feedback-input" id="feedbackText" rows="4" placeholder="Share your experience..."></textarea>
-                <button class="btn-submit" onclick="submitFeedback()">Submit Feedback</button>
-            </div>
-        </section>
     </div>
-
     <script>
-        // Check authentication
-        if (!localStorage.getItem('token')) {
-            window.location.href = '/login.html';
-        }
-
-        // Initialize star rating
-        const stars = document.querySelectorAll('.star-rating');
-        let currentRating = 0;
-
-        stars.forEach(star => {
-            star.addEventListener('click', (e) => {
-                const rating = e.target.dataset.rating;
-                currentRating = rating;
-                updateStars(rating);
-            });
-        });
-
-        function updateStars(rating) {
-            stars.forEach(star => {
-                star.classList.toggle('active', star.dataset.rating <= rating);
-            });
-        }
-
-        // Load products
-        async function loadProducts() {
-            try {
-                const response = await fetch('http://localhost:5500/api/products');
-                const products = await response.json();
-                
-                const productGrid = document.getElementById('productGrid');
-                document.getElementById('totalProducts').textContent = products.length;
-
-                productGrid.innerHTML = products.map(product => `
-                    <div class="product-card animate__animated animate__fadeIn">
-                        <img src="${product.image}" alt="${product.name}" class="product-image">
-                        <div class="product-info">
-                            <h3>${product.name}</h3>
-                            <p class="product-price">NPR ${product.price}</p>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading products:', error);
-            }
-        }
-
-        // Submit feedback
-        async function submitFeedback() {
-            const feedbackText = document.getElementById('feedbackText').value;
-            
-            if (!currentRating || !feedbackText) {
-                alert('Please provide both rating and feedback');
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:5500/api/feedback', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify({
-                        rating: currentRating,
-                        comment: feedbackText
-                    })
-                });
-
-                if (response.ok) {
-                    alert('Thank you for your feedback!');
-                    document.getElementById('feedbackText').value = '';
-                    currentRating = 0;
-                    updateStars(0);
-                } else {
-                    alert('Error submitting feedback. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error submitting feedback:', error);
-                alert('Error submitting feedback. Please try again.');
-            }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('token');
-            window.location.href = '/login.html';
-        }
-
-        // Load initial data
-        loadProducts();
-
-        // Slider functionality
-        const slider = document.querySelector('.slider');
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-        const dotsContainer = document.querySelector('.slider-dots');
-
-        let currentSlide = 0;
-        const totalSlides = slides.length;
-
-        // Create dots
-        slides.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(index));
-            dotsContainer.appendChild(dot);
-        });
-
-        // Update dots
-        function updateDots() {
-            document.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
-            });
-        }
-
-        // Go to specific slide
-        function goToSlide(index) {
-            currentSlide = index;
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            updateDots();
-        }
-
-        // Next slide
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            goToSlide(currentSlide);
-        }
-
-        // Previous slide
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            goToSlide(currentSlide);
-        }
-
-        // Event listeners
-        prevBtn.addEventListener('click', prevSlide);
-        nextBtn.addEventListener('click', nextSlide);
-
-        // Auto slide
-        let slideInterval = setInterval(nextSlide, 5000);
-
-        // Pause auto slide on hover
-        slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        slider.addEventListener('mouseleave', () => {
-            slideInterval = setInterval(nextSlide, 5000);
-        });
-
-        // Product data
-        const products = [
-            {
-                id: 1,
-                name: "Luxury Matte Lipstick",
-                price: 1500,
-                category: "Lips",
-                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 2,
-                name: "Radiant Foundation",
-                price: 2500,
-                category: "Face",
-                image: "https://images.unsplash.com/photo-1571875257727-256c39da42af?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 3,
-                name: "Eyeshadow Palette",
-                price: 3500,
-                category: "Eyes",
-                image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 4,
-                name: "Hydrating Serum",
-                price: 4500,
-                category: "Skincare",
-                image: "https://images.unsplash.com/photo-1570554886111-e80fcca6a029?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 5,
-                name: "Volumizing Mascara",
-                price: 1800,
-                category: "Eyes",
-                image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 6,
-                name: "Liquid Eyeliner",
-                price: 1200,
-                category: "Eyes",
-                image: "https://images.unsplash.com/photo-1631136837056-e4f26945b821?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 7,
-                name: "Glowing Blush",
-                price: 1900,
-                category: "Face",
-                image: "https://images.unsplash.com/photo-1596704017234-0e0dd0f6f5f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 8,
-                name: "Moisturizing Lip Gloss",
-                price: 1300,
-                category: "Lips",
-                image: "https://images.unsplash.com/photo-1586495777965-dcb7e3ae0172?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-            }
-        ];
-
-        // Load featured products
-        function loadFeaturedProducts() {
-            const featuredProducts = document.getElementById('featuredProducts');
-            const featured = products.slice(0, 4);
-            featuredProducts.innerHTML = featured.map(product => `
-                <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-price">NPR ${product.price}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Load new arrivals
-        function loadNewArrivals() {
-            const newArrivals = document.getElementById('newArrivals');
-            const latest = products.slice(4, 8);
-            newArrivals.innerHTML = latest.map(product => `
-                <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-price">NPR ${product.price}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Load best sellers
-        function loadBestSellers() {
-            const bestSellers = document.getElementById('bestSellers');
-            const popular = [products[2], products[0], products[4], products[6]];
-            bestSellers.innerHTML = popular.map(product => `
-                <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p class="product-price">NPR ${product.price}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Load all product sections
-        loadFeaturedProducts();
-        loadNewArrivals();
-        loadBestSellers();
+        // Example: Load stats from localStorage (customize as needed)
+        document.getElementById('orderCount').textContent = localStorage.getItem('orderCount') || 0;
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        document.getElementById('cartCount').textContent = cart.length;
+        // Logout button logic
+        document.querySelector('.btn-logout').onclick = function() {
+            // Add your logout logic here
+            window.location.href = 'login.html';
+        };
     </script>
 </body>
 </html> 

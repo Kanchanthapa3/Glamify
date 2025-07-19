@@ -209,6 +209,153 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+
+        /* Add Product Form Styles */
+        .add-product-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .add-product-section h2 {
+            color: var(--primary-color, #ff69b4);
+            margin-bottom: 1.5rem;
+        }
+
+        .add-product-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 2px solid #ffd1dc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+
+        .submit-product-btn {
+            background: #ff69b4;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-product-btn:hover {
+            background: #ff4f7b;
+            transform: translateY(-2px);
+        }
+
+        /* Admin Controls */
+        .admin-controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .admin-controls h2 {
+            color: #ff69b4;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-add-product-btn {
+            background: #28a745;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-add-product-btn:hover {
+            background: #218838;
+        }
+
+        /* Admin buttons for products */
+        .admin-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.2rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .approve-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .approve-btn:hover {
+            background: #218838;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .product-status {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-pending {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .status-approved {
+            background: #28a745;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -220,6 +367,16 @@
             <a href="cart.html">Cart</a>
         </div>
     </nav>
+
+    <div id="adminPanel" style="display:none; margin: 2rem auto; max-width: 1200px;">
+        <div style="background: #fff0f6; border-radius: 10px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(255,0,100,0.08); margin-bottom: 2rem;">
+            <h2 style="color: #ff69b4; margin-bottom: 1rem;">Admin Panel</h2>
+            <div id="adminSummary" style="display:flex; gap:2rem; margin-bottom:1rem;"></div>
+            <button id="exportCsvBtn" style="background:#ff69b4; color:white; border:none; border-radius:5px; padding:0.7rem 2rem; font-size:1rem; cursor:pointer; margin-bottom:1rem;">Export Products as CSV</button>
+            <p style="color: #333;">You are logged in as <b>Admin</b>. You can approve or delete pending products below.</p>
+            <div id="pendingProductsList"></div>
+        </div>
+    </div>
 
     <div class="products-container">
         <div class="filters">
@@ -238,6 +395,52 @@
             </div>
         </div>
 
+        <!-- Add Product Section (for users) -->
+        <div class="add-product-section" id="addProductSection" style="display: none;">
+            <h2>Add a New Product</h2>
+            <form id="addProductForm" class="add-product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price (NPR)</label>
+                        <input type="number" id="productPrice" name="price" required min="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Eyes">Eyes</option>
+                            <option value="Lips">Lips</option>
+                            <option value="Face">Face</option>
+                            <option value="Skincare">Skincare</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Image URL</label>
+                        <input type="url" id="productImage" name="image" required placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+                <button type="submit" class="submit-product-btn">Submit Product for Approval</button>
+            </form>
+        </div>
+
+        <!-- Admin Controls Section -->
+        <div class="admin-controls" id="adminControls" style="display: none;">
+            <h2>Admin Controls</h2>
+            <button class="toggle-add-product-btn" onclick="toggleAddProduct()">Show/Hide Add Product Form</button>
+        </div>
+
+        <div id="product-actions" style="display:flex; gap:1rem; margin:1.5rem 0;">
+    <button id="addBtn" style="background:#ff69b4; color:white; border:none; border-radius:5px; padding:0.7rem 2rem; font-size:1rem; cursor:pointer;">Add</button>
+    <button id="deleteBtn" style="background:#dc3545; color:white; border:none; border-radius:5px; padding:0.7rem 2rem; font-size:1rem; cursor:pointer;">Delete</button>
+    <button id="updateBtn" style="background:#ffc107; color:white; border:none; border-radius:5px; padding:0.7rem 2rem; font-size:1rem; cursor:pointer;">Update</button>
+</div>
+
         <div class="products-grid" id="productsGrid">
             <!-- Products will be loaded here -->
         </div>
@@ -251,6 +454,30 @@
         </div>
     </div>
 
+    <!-- Modal for Add/Update Product -->
+<div id="productModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:1000; align-items:center; justify-content:center;">
+  <form id="productForm" style="background:white; padding:2rem; border-radius:10px; min-width:320px; display:flex; flex-direction:column; gap:1rem; position:relative;">
+    <span id="closeModal" style="position:absolute; top:10px; right:18px; font-size:1.5rem; cursor:pointer;">&times;</span>
+    <h2 id="modalTitle" style="color:#ff69b4;">Add Product</h2>
+    <input type="text" id="modalName" placeholder="Product Name" required>
+    <input type="number" id="modalPrice" placeholder="Price" required>
+    <input type="text" id="modalCategory" placeholder="Category" required>
+    <input type="url" id="modalImage" placeholder="Image URL" required>
+    <button type="submit" style="background:#ff69b4; color:white; border:none; border-radius:5px; padding:0.7rem 2rem; font-size:1rem; cursor:pointer;">Save</button>
+  </form>
+</div>
+
+    <!-- Modal for Viewing Product Details -->
+<div id="viewProductModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:1001; align-items:center; justify-content:center;">
+  <div style="background:white; padding:2rem; border-radius:10px; min-width:320px; max-width:90vw; max-height:80vh; overflow:auto; position:relative;">
+    <span id="closeViewModal" style="position:absolute; top:10px; right:18px; font-size:1.5rem; cursor:pointer;">&times;</span>
+    <h2 id="viewProductName" style="color:#ff69b4;"></h2>
+    <img id="viewProductImage" src="" alt="" style="width:100%; max-width:300px; display:block; margin:1rem auto; border-radius:10px;" />
+    <p id="viewProductPrice" style="font-weight:bold; color:#ff69b4;"></p>
+    <p id="viewProductDescription" style="margin-top:1rem;"></p>
+  </div>
+</div>
+
     <script>
         // Sample product data with unique images
         const products = [
@@ -260,7 +487,8 @@
                 price: 1500,
                 category: "Lips",
                 image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                rating: 4.5
+                rating: 4.5,
+                description: "A luxurious matte lipstick for bold, beautiful lips."
             },
             {
                 id: 2,
@@ -268,7 +496,8 @@
                 price: 2500,
                 category: "Face",
                 image: "https://images.unsplash.com/photo-1571875257727-256c39da42af?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                rating: 4.8
+                rating: 4.8,
+                description: "Radiant, long-lasting foundation for a flawless finish."
             },
             {
                 id: 3,
@@ -276,7 +505,8 @@
                 price: 3500,
                 category: "Eyes",
                 image: "https://images.unsplash.com/photo-1583241800698-e8ab01830a07?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                rating: 4.7
+                rating: 4.7,
+                description: "18 stunning shades for endless eye looks."
             },
             {
                 id: 4,
@@ -284,7 +514,8 @@
                 price: 4500,
                 category: "Skincare",
                 image: "./images/serum.jpeg",
-                rating: 4.9
+                rating: 4.9,
+                description: "Deep hydration for thirsty skin."
             },
             {
                 id: 5,
@@ -292,7 +523,8 @@
                 price: 1800,
                 category: "Eyes",
                 image: "./images/mascara.jpeg",
-                rating: 4.6
+                rating: 4.6,
+                description: "Creates intense volume and length."
             },
             {
                 id: 6,
@@ -300,7 +532,8 @@
                 price: 1200,
                 category: "Eyes",
                 image: "./images/image.png",
-                rating: 4.4
+                rating: 4.4,
+                description: "Long-lasting, smudge-proof liquid eyeliner."
             },
             {
                 id: 7,
@@ -308,7 +541,8 @@
                 price: 1900,
                 category: "Face",
                 image: "./images/blush.jpeg",
-                rating: 4.3
+                rating: 4.3,
+                description: "Natural-looking, buildable blush."
             },
             {
                 id: 8,
@@ -316,7 +550,8 @@
                 price: 1300,
                 category: "Lips",
                 image: "./images/gloss.jpg",
-                rating: 4.5
+                rating: 4.5,
+                description: "Hydrating and nourishing lip balm."
             },
             {
                 id: 9,
@@ -324,7 +559,8 @@
                 price: 2200,
                 category: "Face",
                 image: "./images/powder.jpeg",
-                rating: 4.2
+                rating: 4.2,
+                description: "Finishing touch for a flawless complexion."
             },
             {
                 id: 10,
@@ -332,7 +568,8 @@
                 price: 2800,
                 category: "Skincare",
                 image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                rating: 4.7
+                rating: 4.7,
+                description: "Gentle and effective facial cleanser."
             },
             {
                 id: 11,
@@ -340,7 +577,8 @@
                 price: 900,
                 category: "Eyes",
                 image: "https://images.unsplash.com/photo-1597225244660-1cd128c64284?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                rating: 4.3
+                rating: 4.3,
+                description: "Precise and long-lasting eyebrow pencil."
             },
             {
                 id: 12,
@@ -348,7 +586,8 @@
                 price: 3200,
                 category: "Face",
                 image: "./images/highlighter.jpeg",
-                rating: 4.8
+                rating: 4.8,
+                description: "Perfect for contouring and highlighting."
             },
             {
                 id: 13,
@@ -356,7 +595,8 @@
                 price: 1700,
                 category: "Lips",
                 image: "./images/lip.jpeg",
-                rating: 4.6
+                rating: 4.6,
+                description: "Smooth and long-wearing liquid lipstick."
             },
             {
                 id: 14,
@@ -364,7 +604,8 @@
                 price: 2100,
                 category: "Face",
                 image: "./images/primer.jpeg",
-                rating: 4.4
+                rating: 4.4,
+                description: "Perfect base for flawless makeup."
             },
             {
                 id: 15,
@@ -372,7 +613,8 @@
                 price: 3800,
                 category: "Skincare",
                 image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                rating: 4.9
+                rating: 4.9,
+                description: "Deep hydration for overnight repair."
             },
             {
                 id: 16,
@@ -380,7 +622,8 @@
                 price: 2900,
                 category: "Face",
                 image: "./images/Contour.jpeg",
-                rating: 4.7
+                rating: 4.7,
+                description: "Complete kit for sculpting and contouring."
             }
         ];
 
@@ -398,14 +641,9 @@
             filteredProducts = products.filter(product => {
                 const matchesCategory = category === 'all' || product.category === category;
                 const matchesSearch = product.name.toLowerCase().includes(searchLower) ||
-                                    product.category.toLowerCase().includes(searchLower);
+                    (product.category && product.category.toLowerCase().includes(searchLower));
                 return matchesCategory && matchesSearch;
             });
-
-            if (currentSort) {
-                sortProducts(currentSort);
-            }
-
             currentPage = 1;
             updatePagination();
             displayProducts();
@@ -447,99 +685,68 @@
                         <button class="add-to-cart" onclick="addToCart(${product.id})">
                             <i class="fas fa-shopping-cart"></i> Add to Cart
                         </button>
+                        <button class="view-product" onclick="event.stopPropagation(); viewProduct(${product.id});" style="margin-top:0.5rem; background:#fff; color:#ff69b4; border:1px solid #ff69b4; border-radius:5px; padding:0.5rem 1rem; cursor:pointer;">View</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Generate star rating HTML
-        function getStarRating(rating) {
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-            let stars = '';
-            
-            for (let i = 0; i < fullStars; i++) {
-                stars += '<i class="fas fa-star"></i>';
-            }
-            if (hasHalfStar) {
-                stars += '<i class="fas fa-star-half-alt"></i>';
-            }
-            const emptyStars = 5 - Math.ceil(rating);
-            for (let i = 0; i < emptyStars; i++) {
-                stars += '<i class="far fa-star"></i>';
-            }
-            
-            return `<div class="stars">${stars}</div>`;
-        }
-
-        // Update pagination
+        // Pagination
         function updatePagination() {
-            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
             const pageNumbers = document.querySelector('.page-numbers');
-            const prevBtn = document.querySelector('.prev');
-            const nextBtn = document.querySelector('.next');
-
-            // Update prev/next buttons
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === totalPages;
-
-            // Generate page numbers
-            let pagesHTML = '';
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            pageNumbers.innerHTML = '';
             for (let i = 1; i <= totalPages; i++) {
-                pagesHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
-            }
-            pageNumbers.innerHTML = pagesHTML;
-
-            // Add click handlers to page numbers
-            document.querySelectorAll('.page-numbers .page-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    currentPage = parseInt(btn.dataset.page);
-                    updatePagination();
+                const btn = document.createElement('button');
+                btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                btn.textContent = i;
+                btn.onclick = () => {
+                    currentPage = i;
                     displayProducts();
-                });
-            });
+                    updatePagination();
+                };
+                pageNumbers.appendChild(btn);
+            }
+            document.querySelector('.page-btn.prev').disabled = currentPage === 1;
+            document.querySelector('.page-btn.next').disabled = currentPage === totalPages;
         }
 
-        // Event Listeners
-        document.querySelector('.prev').addEventListener('click', () => {
+        document.querySelector('.page-btn.prev').onclick = () => {
             if (currentPage > 1) {
                 currentPage--;
-                updatePagination();
                 displayProducts();
+                updatePagination();
             }
-        });
-
-        document.querySelector('.next').addEventListener('click', () => {
+        };
+        document.querySelector('.page-btn.next').onclick = () => {
             const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
-                updatePagination();
                 displayProducts();
+                updatePagination();
             }
-        });
+        };
 
-        // Category filter buttons
-        document.querySelectorAll('.filter-group:first-child .filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-group:first-child .filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentCategory = btn.dataset.category;
+        // Filter and sort event listeners
+        document.querySelectorAll('.filter-btn[data-category]').forEach(btn => {
+            btn.onclick = function () {
+                document.querySelectorAll('.filter-btn[data-category]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.getAttribute('data-category');
                 filterProducts(currentCategory, document.querySelector('.search-bar').value);
-            });
+            };
         });
 
-        // Sort buttons
-        document.querySelectorAll('.filter-group:last-child .filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-group:last-child .filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                sortProducts(btn.dataset.sort);
-            });
+        document.querySelectorAll('.filter-btn[data-sort]').forEach(btn => {
+            btn.onclick = function () {
+                document.querySelectorAll('.filter-btn[data-sort]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                sortProducts(this.getAttribute('data-sort'));
+            };
         });
 
-        // Search functionality
-        document.querySelector('.search-bar').addEventListener('input', (e) => {
-            filterProducts(currentCategory, e.target.value);
+        document.querySelector('.search-bar').addEventListener('input', function () {
+            filterProducts(currentCategory, this.value);
         });
 
         // Add to cart functionality
@@ -571,9 +778,238 @@
             }
         }
 
+        // Star rating
+        function getStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            let stars = '★'.repeat(fullStars);
+            if (halfStar) stars += '½';
+            stars = stars.padEnd(5, '☆');
+            return `<span style="color:#ffd700;">${stars}</span>`;
+        }
+
         // Initialize
         updatePagination();
         displayProducts();
+
+        const productModal = document.getElementById('productModal');
+        const productForm = document.getElementById('productForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const closeModal = document.getElementById('closeModal');
+        const modalName = document.getElementById('modalName');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalImage = document.getElementById('modalImage');
+
+        // Button elements
+        document.getElementById('addBtn').onclick = () => {
+            selectedAction = "add";
+            modalTitle.textContent = "Add Product";
+            productForm.reset();
+            productModal.style.display = "flex";
+        };
+        document.getElementById('deleteBtn').onclick = () => {
+            selectedAction = "delete";
+            alert("Click on a product to delete it.");
+        };
+        document.getElementById('updateBtn').onclick = () => {
+            selectedAction = "update";
+            alert("Click on a product to update it.");
+        };
+        closeModal.onclick = () => productModal.style.display = "none";
+
+        // Add/Update Product Form Submission
+        productForm.onsubmit = function(e) {
+            e.preventDefault();
+            const name = modalName.value.trim();
+            const price = parseFloat(modalPrice.value);
+            const category = modalCategory.value.trim();
+            const image = modalImage.value.trim();
+            if (!name || !price || !category || !image) return alert("All fields required!");
+            if (selectedAction === "add") {
+                const id = products.length ? Math.max(...products.map(p=>p.id))+1 : 1;
+                products.push({id, name, price, category, image, rating: 4.0});
+            } else if (selectedAction === "update" && updateProductId !== null) {
+                const prod = products.find(p => p.id === updateProductId);
+                if (prod) {
+                    prod.name = name;
+                    prod.price = price;
+                    prod.category = category;
+                    prod.image = image;
+                }
+            }
+            productModal.style.display = "none";
+            updateProductId = null;
+            renderProducts();
+        };
+
+        // Render Products
+        function renderProducts() {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = products.map(product => `
+                <div class="product-card" style="position:relative; cursor:${selectedAction ? 'pointer' : 'default'};" onclick="handleProductClick(${product.id})">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">NPR ${product.price}</p>
+                        <div class="product-rating">${getStarRating(product.rating)}</div>
+                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id});">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        window.renderProducts = renderProducts;
+
+        // Handle Product Click for Delete/Update
+        window.handleProductClick = function(id) {
+            if (selectedAction === "delete") {
+                if (confirm("Delete this product?")) {
+                    const idx = products.findIndex(p => p.id === id);
+                    if (idx !== -1) {
+                        products.splice(idx, 1);
+                        renderProducts();
+                    }
+                }
+                selectedAction = null;
+            } else if (selectedAction === "update") {
+                const prod = products.find(p => p.id === id);
+                if (prod) {
+                    modalTitle.textContent = "Update Product";
+                    modalName.value = prod.name;
+                    modalPrice.value = prod.price;
+                    modalCategory.value = prod.category;
+                    modalImage.value = prod.image;
+                    updateProductId = id;
+                    productModal.style.display = "flex";
+                }
+                selectedAction = null;
+            }
+        };
+
+        // On page load
+        document.addEventListener('DOMContentLoaded', renderProducts);
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target == productModal) {
+                productModal.style.display = "none";
+                updateProductId = null;
+            }
+            if (event.target == viewProductModal) {
+                document.getElementById('viewProductModal').style.display = "none";
+            }
+        };
+
+        // Hide admin buttons for non-admin users
+        (function() {
+            const adminEmail = 'admin@glamify.com';
+            function parseJwt (token) {
+                try {
+                    return JSON.parse(atob(token.split('.')[1]));
+                } catch (e) {
+                    return {};
+                }
+            }
+            const token = localStorage.getItem('token');
+            let isAdmin = false;
+            if (token) {
+                const payload = parseJwt(token);
+                if (payload.email === adminEmail) isAdmin = true;
+            }
+            // Hide admin buttons for non-admin users
+            if (!isAdmin) {
+                const actions = document.getElementById('product-actions');
+                if (actions) actions.style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'none';
+            } else {
+                // Show admin panel
+                document.getElementById('adminPanel').style.display = '';
+                // Admin summary
+                function updateAdminSummary() {
+                    const total = products.length;
+                    const pending = products.filter(p => p.status === 'pending').length;
+                    const approved = products.filter(p => p.status === 'approved' || !p.status).length;
+                    document.getElementById('adminSummary').innerHTML = `
+                        <div style='background:#fff; border-radius:8px; padding:1rem 2rem; box-shadow:0 2px 8px #ff69b422;'>
+                            <b>Total Products:</b> ${total}
+                        </div>
+                        <div style='background:#fff; border-radius:8px; padding:1rem 2rem; box-shadow:0 2px 8px #ffc10722;'>
+                            <b>Pending:</b> ${pending}
+                        </div>
+                        <div style='background:#fff; border-radius:8px; padding:1rem 2rem; box-shadow:0 2px 8px #28a74522;'>
+                            <b>Approved:</b> ${approved}
+                        </div>`;
+                }
+                updateAdminSummary();
+                // Pending products list
+                function renderPendingProducts() {
+                    const pending = products.filter(p => p.status === 'pending');
+                    if (pending.length === 0) {
+                        document.getElementById('pendingProductsList').innerHTML = '<p style="color:#28a745;">No pending products!</p>';
+                        return;
+                    }
+                    document.getElementById('pendingProductsList').innerHTML = pending.map(p => `
+                        <div style='background:#fff; border-radius:8px; padding:1rem; margin-bottom:1rem; box-shadow:0 2px 8px #ffc10722; display:flex; align-items:center; gap:2rem;'>
+                            <img src='${p.image}' alt='${p.name}' style='width:60px; height:60px; object-fit:cover; border-radius:8px;'>
+                            <div style='flex:1;'>
+                                <b>${p.name}</b><br>
+                                <span style='color:#ff69b4;'>NPR ${p.price}</span> | <span>${p.category}</span>
+                            </div>
+                            <button class='admin-btn approve-btn' onclick='approveProduct(${p.id})'>Approve</button>
+                            <button class='admin-btn delete-btn' onclick='deleteProduct(${p.id})'>Delete</button>
+                        </div>
+                    `).join('');
+                }
+                window.approveProduct = function(id) {
+                    const prod = products.find(p => p.id === id);
+                    if (prod) prod.status = 'approved';
+                    renderPendingProducts();
+                    updateAdminSummary();
+                    renderProducts();
+                };
+                window.deleteProduct = function(id) {
+                    const idx = products.findIndex(p => p.id === id);
+                    if (idx !== -1) products.splice(idx, 1);
+                    renderPendingProducts();
+                    updateAdminSummary();
+                    renderProducts();
+                };
+                renderPendingProducts();
+                // Export as CSV
+                document.getElementById('exportCsvBtn').onclick = function() {
+                    const csv = [
+                        ['ID','Name','Price','Category','Status','Image'],
+                        ...products.map(p => [p.id, p.name, p.price, p.category, p.status||'approved', p.image])
+                    ].map(row => row.map(String).map(s => '"'+s.replace(/"/g,'""')+'"').join(',')).join('\n');
+                    const blob = new Blob([csv], {type:'text/csv'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'products.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                };
+            }
+        })();
+
+        // JS logic for viewing product details
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            document.getElementById('viewProductName').textContent = product.name;
+            document.getElementById('viewProductImage').src = product.image;
+            document.getElementById('viewProductImage').alt = product.name;
+            document.getElementById('viewProductPrice').textContent = `NPR ${product.price}`;
+            document.getElementById('viewProductDescription').textContent = product.description || 'No description available.';
+            document.getElementById('viewProductModal').style.display = 'flex';
+        }
+        document.getElementById('closeViewModal').onclick = function() {
+            document.getElementById('viewProductModal').style.display = 'none';
+        };
     </script>
 </body>
 </html> 

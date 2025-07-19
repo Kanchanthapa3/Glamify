@@ -7,78 +7,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles/payment.css">
     <!-- Khalti Payment Gateway -->
-    <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+    <script src="https://khalti.com/static/khalti-checkout.js"></script>
 </head>
 <body>
-    <div class="checkout-container">
-        <div class="checkout-form">
-            <h2 class="section-title">Payment Information</h2>
-            <div class="payment-methods">
-                <div class="payment-method">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <div>Cash on Delivery</div>
-                </div>
-                <div class="payment-method" onclick="initiateKhalti()">
-                    <i class="fas fa-wallet"></i>
-                    <div>Khalti</div>
-                </div>
-            </div>
-
-            <form id="paymentForm" style="display: none;">
-                <div class="form-group">
-                    <label for="cardName">Name on Card</label>
-                    <input type="text" id="cardName" required placeholder="">
-                </div>
-
-                <div class="form-group">
-                    <label for="cardNumber">Card Number</label>
-                    <input type="text" id="cardNumber" required placeholder="1234 5678 9012 3456" maxlength="19">
-                </div>
-
-                <div class="card-details">
-                    <div class="form-group">
-                        <label for="expiryDate">Expiry Date</label>
-                        <input type="text" id="expiryDate" required placeholder="MM/YY" maxlength="5">
-                    </div>
-                    <div class="form-group">
-                        <label for="cvv">CVV</label>
-                        <input type="password" id="cvv" required placeholder="123" maxlength="3">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="address">Shipping Address</label>
-                    <input type="text" id="address" required placeholder="Enter your full address">
-                </div>
-
-                <button type="submit" class="pay-button">
-                    <i class="fas fa-lock"></i> Pay Securely
+    <div class="checkout-container" style="background: url('./images/ppty.jpg') center/cover no-repeat; border-radius: 18px; box-shadow: 0 4px 24px rgba(255,105,180,0.10); padding: 2.5rem 0; margin-bottom: 2rem;">
+        <div class="checkout-form" style="background: rgba(255,255,255,0.92); max-width: 420px; margin: 0 auto; border-radius: 16px; box-shadow: 0 2px 12px rgba(255,105,180,0.08); padding: 2.5rem 2rem;">
+            <h2 class="section-title" style="color: #ff69b4; text-align:center; margin-bottom: 1.5rem; font-family: 'Segoe Script', cursive;">Cash on Delivery</h2>
+            <div style="text-align:center; margin-bottom: 2.5rem;">
+                <button id="cashOnDeliveryBtn" style="
+                    background: linear-gradient(90deg, #ff69b4 0%, #ffb6c1 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 30px;
+                    padding: 1rem 2.5rem;
+                    font-size: 1.2rem;
+                    font-family: 'Segoe Script', cursive;
+                    box-shadow: 0 2px 8px rgba(255,105,180,0.18);
+                    cursor: pointer;
+                    transition: background 0.3s, transform 0.2s;
+                " onmouseover="this.style.background='#ff4f7b';this.style.transform='scale(1.04)';"
+                  onmouseout="this.style.background='linear-gradient(90deg, #ff69b4 0%, #ffb6c1 100%)';this.style.transform='scale(1)';">
+                    <i class="fas fa-heart"></i> Place Order
                 </button>
-
-                <div class="secure-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    Your payment information is secure
+                <p style="margin-top:1.5rem; color:#ff69b4; font-size:1.1rem; font-family: 'Segoe Script', cursive;">
+                    Pay when your Glamify goodies arrive at your door!
+                </p>
+            </div>
+            <div style="text-align:center; margin: 2.5rem 0 0 0;">
+                <div style="margin-bottom: 1.2rem; color: #aaa; font-size: 1.1rem; font-family: 'Poppins', sans-serif; font-weight: 500;">or</div>
+                <div style="margin-bottom: 1.2rem;">
+                    <img src="https://english.onlinekhabar.com/wp-content/uploads/2022/02/khalti-digital-wallet-1024x425.png" alt="Khalti" style="height: 2.5rem; border-radius: 6px; box-shadow: 0 2px 8px #9c88ff22;">
                 </div>
-            </form>
-        </div>
-
-        <div class="order-summary">
-            <h2 class="section-title">Order Summary</h2>
-            <div class="summary-item">
-                <span>Subtotal</span>
-                <span>NPR 0</span>
-            </div>
-            <div class="summary-item">
-                <span>Shipping</span>
-                <span>NPR 100</span>
-            </div>
-            <div class="summary-item">
-                <span>Tax</span>
-                <span>NPR 0</span>
-            </div>
-            <div class="summary-item summary-total">
-                <span>Total</span>
-                <span>NPR 100</span>
+                <button id="khaltiPayBtn" class="pay-button" style="background: linear-gradient(90deg, #9c88ff 0%, #ff69b4 100%); color: #fff; font-size: 1.15rem; border-radius: 30px; border: none; padding: 1rem 2.5rem; font-family: 'Segoe Script', cursive; box-shadow: 0 2px 8px #9c88ff33; cursor: pointer; transition: background 0.3s, transform 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.7rem;">
+                    <img src="https://english.onlinekhabar.com/wp-content/uploads/2022/02/khalti-digital-wallet-1024x425.png" alt="Khalti" style="height: 2rem; vertical-align: middle; border-radius: 4px; box-shadow: 0 2px 8px #9c88ff22;"> 
+                    Pay with Khalti
+                </button>
             </div>
         </div>
     </div>
